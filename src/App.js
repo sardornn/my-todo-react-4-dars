@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { v4 } from 'uuid';
+import {Form , Todos} from './components'
 
 function App() {
+  const localTodos = localStorage.getItem('todos')
+  const [todos , setTodos] = useState(localTodos ? JSON.parse(localTodos) : [
+    {
+      id : v4(),
+      text : 'Get Up' ,
+      isCompleted : false,
+    },
+    {
+      id : v4(),
+      text : 'Phone checked' ,
+      isCompleted : false,
+    },
+ 
+  ]);
+  const handleDelete = (evt)=>{
+
+    const todoId = evt.target.dataset.todoId ;
+    const filteredTodos = todos.filter((todo) => todo.id !== todoId);
+    window.localStorage.setItem('todos' , JSON.stringify( filteredTodos));
+
+    setTodos(filteredTodos);
+   
+  }
+  const handleCheck = (evt) => {
+		const todoId = evt.target.dataset.todoId ;
+
+		const foundTodo = todos.find((todo) => todo.id === todoId);
+
+		foundTodo.isCompleted = !foundTodo.isCompleted;
+
+		setTodos([...todos]);
+	};
+
+  
   return (
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form todos= {todos} setTodos={setTodos}></Form>
+      <Todos todos= {todos}  handleDelete={handleDelete} handleCheck={handleCheck}></Todos>
+      <button>All</button>
+      <button>Complated</button>
+      <button>UnComplated</button>
+
     </div>
   );
 }
