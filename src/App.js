@@ -32,19 +32,41 @@ function App() {
 		const foundTodo = todos.find((todo) => todo.id === todoId);
 
 		foundTodo.isCompleted = !foundTodo.isCompleted;
+    window.localStorage.setItem('todos' , JSON.stringify( [...todos]));
 
 		setTodos([...todos]);
 	};
 
-  
+
+  const AllTodo = () =>{
+    
+    setTodos(todos)
+
+  }
+
+  const CompletedTodo = ()=>{
+   const comTodo =[...todos]
+  // const [comTodo, setComTodo] = useState([...todos])
+
+    const completedTodos = comTodo.filter(todo => todo.isCompleted)
+    // setComTodo(completedTodos)
+    setTodos(completedTodos)
+  }
+  const UnCompletedTodo = ()=>{
+   const unComTodo = [...todos]
+  //  const [unComTodo, setUnComTodo] = useState([...todos])
+    const unCompletedTodos = unComTodo.filter(todo => !todo.isCompleted)
+    // setUnComTodo(unCompletedTodos)
+    setTodos(unCompletedTodos)
+  }
   return (
 
     <div className="App">
       <Form todos= {todos} setTodos={setTodos}></Form>
       <Todos todos= {todos}  handleDelete={handleDelete} handleCheck={handleCheck}></Todos>
-      <button>All</button>
-      <button>Complated</button>
-      <button>UnComplated</button>
+      <button onClick={AllTodo}>All</button>
+      <button onClick={CompletedTodo}>Completed</button>
+      <button onClick={UnCompletedTodo}>UnCompleted</button>
 
     </div>
   );
