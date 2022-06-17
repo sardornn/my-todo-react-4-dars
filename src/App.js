@@ -17,57 +17,51 @@ function App() {
     },
  
   ]);
-  const handleDelete = (evt)=>{
 
+  const handleDelete = (evt)=>{
     const todoId = evt.target.dataset.todoId ;
     const filteredTodos = todos.filter((todo) => todo.id !== todoId);
     window.localStorage.setItem('todos' , JSON.stringify( filteredTodos));
-
     setTodos(filteredTodos);
-   
   }
+
   const handleCheck = (evt) => {
 		const todoId = evt.target.dataset.todoId ;
-
 		const foundTodo = todos.find((todo) => todo.id === todoId);
-
 		foundTodo.isCompleted = !foundTodo.isCompleted;
     window.localStorage.setItem('todos' , JSON.stringify( [...todos]));
-
 		setTodos([...todos]);
 	};
 
-
   const AllTodo = () =>{
-    
-    setTodos(todos)
-
+    setTodos(JSON.parse(localTodos))
   }
 
   const CompletedTodo = ()=>{
-   const comTodo =[...todos]
-  // const [comTodo, setComTodo] = useState([...todos])
+   const comTodo = JSON.parse(localTodos)
+  //  const localTodos = localStorage.getItem('todos')
 
+  // const [comTodo, setComTodo] = useState([...todos])
     const completedTodos = comTodo.filter(todo => todo.isCompleted)
     // setComTodo(completedTodos)
     setTodos(completedTodos)
   }
+
   const UnCompletedTodo = ()=>{
-   const unComTodo = [...todos]
+   const unComTodo = JSON.parse(localTodos)
   //  const [unComTodo, setUnComTodo] = useState([...todos])
     const unCompletedTodos = unComTodo.filter(todo => !todo.isCompleted)
     // setUnComTodo(unCompletedTodos)
     setTodos(unCompletedTodos)
   }
-  return (
 
+  return (
     <div className="App">
       <Form todos= {todos} setTodos={setTodos}></Form>
       <Todos todos= {todos}  handleDelete={handleDelete} handleCheck={handleCheck}></Todos>
       <button onClick={AllTodo}>All</button>
       <button onClick={CompletedTodo}>Completed</button>
       <button onClick={UnCompletedTodo}>UnCompleted</button>
-
     </div>
   );
 }
